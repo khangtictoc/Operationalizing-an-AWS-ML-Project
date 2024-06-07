@@ -143,4 +143,3 @@ logger.info("Starting Model Training")
 model=train(model, train_loader, validation_loader, criterion, optimizer)
 torch.save(model.state_dict(), 'TrainedModels/model.pth')
 print('saved')
-
