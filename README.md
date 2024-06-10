@@ -16,7 +16,7 @@ leaks or performance issues.
 
 - Scenario: Use the solution of last project
   - Task: Dog Breed Image Classification
-  - Dataset: 
+  - Dataset: [Dog Images Breed Dataset](https://325c7m-my.sharepoint.com/:f:/g/personal/khangtictoc_325c7m_onmicrosoft_com/EpD704qbm79IsoZbkXQ042QBv4vwAowXgX9fyta6UV3IuA?e=41eM5c)
 - AWS Service:
   - Sagemaker
   - EC2

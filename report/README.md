@@ -5,6 +5,7 @@
 - [Operationalizing an AWS ML Project](#operationalizing-an-aws-ml-project)
   - [Table of Content](#table-of-content)
   - [Setup \& Experiment](#setup--experiment)
+    - [Create Notebook Instance](#create-notebook-instance)
     - [Upload data to an S3 bucket](#upload-data-to-an-s3-bucket)
     - [Hyperparameter tuning \& Training job](#hyperparameter-tuning--training-job)
     - [Deploy endpoint](#deploy-endpoint)
@@ -20,6 +21,12 @@
 
 
 ## Setup & Experiment
+
+### Create Notebook Instance
+
+<p align="center">
+    <img src="img/notebook_instance.png">
+</p>
 
 ### Upload data to an S3 bucket
 
@@ -84,13 +91,13 @@ Configure "Variant automatic scaling", allow scaling in range from minimum of 1 
     <img width=450px height=300px  src="img/variant_auto_scaling.png">
 </p>
 
-Configure "Built-in scaling policy" for automatic scaling based on the number of simultaneous invocations per instance (`SageMakerVariantInvocationsPerInstance`). This metric is defined by AWS in `Metric` in `Cloudwatch`. 
+Configur **"Built-in scaling policy"** for automatic scaling based on the number of simultaneous invocations per instance (`SageMakerVariantInvocationsPerInstance`). This metric is defined by AWS in `Metric` in `Cloudwatch`. 
 
 <p align="center">
     <img width=450px height=300px src="img/bultin_scaling_policy.png">
 </p>
 
-**Explain:** 
+**Explain:**
 - Those configured figure are reasonable for this context that could handle enough invocations at the same time. The cool down for both scale-in and scale-out are **30 seconds** for quick deploys and reduct downtime when an auto-scaling event is triggered; therefore, we can minimize the redundant unused instances or horizontally increase the performace when heavy workload comes in,  
 - The threshold of **50** invocations and **3** for the maximum number of scaling instances is  are suitable for this scenarios, we can have a quick test to examine our endpoint.
 
@@ -116,7 +123,7 @@ Prepare data and folder structure for directly training on this instance
 wget https://s3-us-west-1.amazonaws.com/udacity-aind/dog-project/dogImages.zip
 unzip dogImages.zip
 mkdir TrainedModels
-wget raw.github -O solution.py
+wget [raw.github](https://raw.githubusercontent.com/khangtictoc/Operationalizing-an-AWS-ML-Project/main/ec2train1.py) -O solution.py
 ```
 
 Folders and files before training:
@@ -204,6 +211,17 @@ The output logs show the perfomance and consumed resources. The total amount of 
 The final predict result are the probability of **133 labels of dog breed** and can be refered at [this file](predicted_image_result.txt)
 
 #### Concurrency
+
+We have set reserved concurrency of `5` and provision `3` instances for minimal demo. This means we can handle 3 incoming requests at the same time, which is stable enough for average number of invocations from users or apps
+
+> Note: We must not use the `LATEST` version for the provisioned concurrency. We have to create a new one
+
+
+<p align="center">
+    <img src="img/concurrency_lambda.png">
+</p>
+
+
 
 
 
